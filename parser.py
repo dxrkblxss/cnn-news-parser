@@ -47,7 +47,7 @@ def main():
             writer.writeheader()
             writer.writerows(data)
         print("Данные сохранены в output.csv")
-    else:  # json
+    else:
         with open('output.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
         print("Данные сохранены в output.json")
