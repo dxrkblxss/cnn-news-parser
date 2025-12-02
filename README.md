@@ -24,11 +24,21 @@ git clone https://github.com/dxrkblxss/parser.git
 cd parser
 ```
 
-Install dependencies:
+2. (Recommended) Create a virtual environment:
+
+```bash
+python -m venv venv
+source venv/bin/activate   # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
+
+> [!WARNING]
+> Using a virtual environment is recommended, especially on Linux distributions like Arch/Manjaro, to avoid system package conflicts (PEP 668).
 
 ---
 
@@ -67,11 +77,11 @@ Each entry contains:
 ---
 
 > [!IMPORTANT]
-> ⚠️ The script uses BeautifulSoup and requests.
+> - The script uses BeautifulSoup and requests.
 >
-> ⚠️ CNN's website structure may change, which could break the parser.
+> - CNN's website structure may change, which could break the parser.
 >
-> ⚠️ Python 3.9+ is required.
+> - Python 3.9+ is required.
 
 ## 📄 License
 MIT License
