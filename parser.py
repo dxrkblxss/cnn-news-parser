@@ -1,36 +1,56 @@
-import requests
+import requests, csv, json
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+import argparse
 
 def main():
-    out_type = input("CSV / JSON?\n")
+    parser = argparse.ArgumentParser(description="Парсер новостей CNN")
+    parser.add_argument(
+        "--format",
+        choices=["csv", "json"],
+        default="csv",
+        help="Формат вывода: csv или json (по умолчанию csv)"
+    )
+    args = parser.parse_args()
+    out_type = args.format
 
     url = 'https://edition.cnn.com/'
 
-    response = requests.get(url)
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'lxml')
-        titles = soup.find_all('span', class_='container__headline-text')
-
-        seen = set()
-        counter = 1
-        for title in titles:
-            headline = title.get_text(strip=True)
-            if headline and headline not in seen:
-                link_tag = title
-                for _ in range(3):
-                    if link_tag.parent:
-                        link_tag = link_tag.parent
-
-                href = link_tag.get('href')
-                full_url = urljoin(url, str(href)) if href else "Not found"
-
-                print(f"{counter}. {headline}\nLink: {full_url}\n")
-                seen.add(headline)
-                counter += 1
-    else:
-        print(f"Failed to retrieve the webpage. Status code: {response.status_code}")
+    try:
+        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+        response.raise_for_status()
+    except requests.RequestException as e:
+        print(f"Не удалось получить страницу: {e}")
         return
+
+    soup = BeautifulSoup(response.text, 'lxml')
+    titles = soup.find_all('span', class_='container__headline-text')
+
+    data = []
+    seen = set()
+
+    for title in titles:
+        headline = title.get_text(strip=True)
+        if not headline or headline in seen:
+            continue
+
+        link_tag = title.find_parent('a')
+        full_url = urljoin(url, str(link_tag['href'])) if link_tag and link_tag.has_attr('href') else "Not found"
+
+        data.append({'headline': headline, 'link': full_url})
+        seen.add(headline)
+
+    if out_type == "csv":
+        with open('output.csv', 'w', newline='', encoding='utf-8') as csvfile:
+            fieldnames = ['headline', 'link']
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(data)
+        print("Данные сохранены в output.csv")
+    else:  # json
+        with open('output.json', 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4)
+        print("Данные сохранены в output.json")
 
 if __name__ == "__main__":
     main()
