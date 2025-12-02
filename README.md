@@ -20,7 +20,7 @@ A simple Python script to **scrape news headlines** from [CNN](https://edition.c
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/ваш-username/cnn-news-parser.git
+git clone https://github.com/https://github.com/dxrkblxss/parser.git
 cd cnn-news-parser
 ```
 
