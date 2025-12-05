@@ -4,6 +4,7 @@ from jinja2 import Environment, FileSystemLoader
 from urllib.parse import urljoin
 import argparse
 
+
 def main():
     parser = argparse.ArgumentParser(description="Парсер новостей CNN")
     parser.add_argument(
@@ -12,6 +13,7 @@ def main():
         default="csv",
         help="Формат вывода: csv, json или html (по умолчанию csv)",
     )
+    parser.add_argument("--output", default="output", help="Имя выходного файла")
     args = parser.parse_args()
     out_type = args.format
 
@@ -46,22 +48,24 @@ def main():
         seen.add(headline)
 
     if out_type == "csv":
-        with open("output.csv", "w", newline="", encoding="utf-8") as csvfile:
+        with open(f"{args.output}.csv", "w", newline="", encoding="utf-8") as csvfile:
             fieldnames = ["headline", "link"]
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(data)
-        print("Данные сохранены в output.csv")
+        print(f"Данные сохранены в {args.output}.csv")
     elif out_type == "html":
-        env = Environment(loader=FileSystemLoader('.'))
-        template = env.get_template('template.html')
+        env = Environment(loader=FileSystemLoader("."))
+        template = env.get_template("template.html")
         html_content = template.render(data=data)
-        with open("output.html", "w", encoding="utf-8") as f:
+        with open(f"{args.output}.html", "w", encoding="utf-8") as f:
             f.write(html_content)
+        print(f"Данные сохранены в {args.output}.html")
     else:
-        with open("output.json", "w", encoding="utf-8") as jsonfile:
+        with open(f"{args.output}.json", "w", encoding="utf-8") as jsonfile:
             json.dump(data, jsonfile, indent=4)
-        print("Данные сохранены в output.json")
+        print(f"Данные сохранены в {args.output}.json")
+
 
 if __name__ == "__main__":
     main()
