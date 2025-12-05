@@ -11,7 +11,7 @@ A simple Python script to **scrape news headlines** from [CNN](https://edition.c
 
 - Fetches current headlines from CNN's homepage  
 - Filters out duplicate headlines  
-- Saves results in CSV or JSON  
+- Saves results in CSV, JSON, or HTML using a template
 
 ---
 
@@ -55,16 +55,62 @@ To save in JSON:
 python parser.py --format json
 ```
 
+To save in HTML (uses template.html):
+
+```bash
+python parser.py --format html
+```
+
+You can also specify a custom output file name:
+
+```bash
+python parser.py --format csv --output my_news
+```
+
 ## 📂 Output
 | Format | File       |
 |--------|------------|
 | CSV    | output.csv |
 | JSON   | output.json|
+| HTML   | output.html|
 
 Each entry contains:
 
 - headline — news headline
 - link — URL to the news
+
+---
+
+## 🖼 HTML Template
+The script uses **Jinja2** to render HTML output. A default template `template.html` is already included in the project, but you can **modify it** to fit your needs.
+
+Example structure of `template.html`:
+
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Scraped Content</title>
+</head>
+
+<body>
+    <h1>Scraped CNN Titles</h1>
+    {% if data %}
+        {% for title in data %}
+        <ul>
+            <li><a href="{{ title.link }}">{{ title.headline }}</a></li>
+        </ul>
+        {% endfor %}
+    {% else %}
+    <p>No titles found.</p>
+    {% endif %}
+</body>
+
+</html>
+```
+
+The `data` variable (list of dictionaries with `headline` and `link`) contains all the scraped headlines and links.
 
 ---
 
