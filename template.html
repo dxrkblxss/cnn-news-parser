@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Scraped Content</title>
+</head>
+
+<body>
+    <h1>Scraped CNN Titles</h1>
+    {% if data %}
+        {% for title in data %}
+        <ul>
+            <li><a href="{{ title.link }}">{{ title.headline }}</a></li>
+        </ul>
+        {% endfor %}
+    {% else %}
+    <p>No titles found.</p>
+    {% endif %}
+</body>
+
+</html>
