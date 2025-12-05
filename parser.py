@@ -18,7 +18,7 @@ def main():
     url = "https://edition.cnn.com/"
 
     try:
-        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=10)
         response.raise_for_status()
     except requests.RequestException as e:
         print(f"Не удалось получить страницу: {e}")
