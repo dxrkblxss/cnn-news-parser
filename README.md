@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-A simple Python script to **scrape news headlines** from [CNN](https://edition.cnn.com/) and save them in **CSV** or **JSON** format.
+A simple Python script to **scrape news headlines** from [CNN](https://edition.cnn.com/) and save them in **CSV**, **JSON** or **HTML** format.
 
 ---
 
